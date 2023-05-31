@@ -89,5 +89,8 @@ def update_data(selected_indices):
         highest_value_box
     )
 
+# Define the server variable as the entry point for your Dash app
+server = app.server
+
 if __name__ == '__main__':
     app.run_server(debug=True)
