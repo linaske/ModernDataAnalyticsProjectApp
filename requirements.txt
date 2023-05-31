@@ -8,13 +8,13 @@ importlib-metadata
 itsdangerous
 Jinja2
 MarkupSafe
-mkl-fft==1.3.6
+mkl-fft
 mkl-random
-mkl-service==2.4.0
+mkl-service
 numexpr
 numpy
 packaging
-pandas==1.5.3
+pandas
 plotly
 python-dateutil
 pytz
