@@ -8,8 +8,6 @@ importlib-metadata
 itsdangerous
 Jinja2
 MarkupSafe
-mkl-random
-mkl-service
 numexpr
 numpy
 packaging
