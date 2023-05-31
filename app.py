@@ -15,6 +15,9 @@ data = pd.DataFrame({'timestamp': timestamps, 'value': values})
 # Initialize the Dash app
 app = dash.Dash(__name__)
 
+# Define the server variable as the entry point for your Dash app
+server = app.server
+
 # Set up the Dash app layout
 app.layout = html.Div(children=[
     html.H1('MDA Data Visualization: pilot run'),
@@ -88,9 +91,6 @@ def update_data(selected_indices):
         noise_level_box,
         highest_value_box
     )
-
-# Define the server variable as the entry point for your Dash app
-server = app.server
 
 if __name__ == '__main__':
     app.run_server(debug=True)
