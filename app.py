@@ -4,18 +4,18 @@ from dash import html
 import pandas as pd
 import plotly.graph_objects as go
 
-# Read data from CSV file
+# Read data from .csv
 data = pd.read_csv('data.csv', parse_dates=['timestamp'])
 
-# Initialize the Dash app
+# Initialize app
 app = dash.Dash(__name__)
 
-# Define the server variable as the entry point for your Dash app
+# Define the server variable
 server = app.server
 
-# Set up the Dash app layout
+# Set up layout
 app.layout = html.Div(children=[
-    html.H1('MDA Data Visualization: pilot run'),
+    html.H1('Crowdedness at Oude Markt'),
     html.Div(id='noise-level', className='box'),
     html.Div(id='highest-value', className='box'),
     dcc.Graph(id='line-chart'),
@@ -31,9 +31,7 @@ app.layout = html.Div(children=[
     ),
 ])
 
-# Define the callback function
-
-
+# Define the callbacks
 @app.callback(
     dash.dependencies.Output('line-chart', 'figure'),
     dash.dependencies.Output('noise-level', 'children'),
@@ -57,18 +55,15 @@ def update_data(selected_indices):
     max_timestamp = filtered_data.loc[filtered_data['value'].idxmax(
     ), 'timestamp']
 
-    median_of_day = data['value'].median()
+    mean_of_the_day = data['value'].mean()
     avg_value = round(filtered_data['value'].mean(), 2)
 
-    if avg_value >= 1.3 * median_of_day:
+    if avg_value >= 1.05 * mean_of_the_day:
         noise_level = 'Busy'
         box_color = 'red'
-    elif avg_value <= 0.7 * median_of_day:
+    else:
         noise_level = 'Calm'
         box_color = 'green'
-    else:
-        noise_level = 'Mild'
-        box_color = 'orange'
 
     noise_level_box = html.Div(
         style={'background-color': box_color,
@@ -95,7 +90,6 @@ def update_data(selected_indices):
         noise_level_box,
         highest_value_box
     )
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
