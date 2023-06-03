@@ -4,8 +4,11 @@ from dash import html
 import pandas as pd
 import plotly.graph_objects as go
 
-# Read data from .csv
+# Read predictions data from .csv
 data = pd.read_csv('data.csv', parse_dates=['timestamp'])
+
+# Read reference data from .csv
+data_ref = pd.read_csv('data_ref.csv', parse_dates=['timestamp'])
 
 # Initialize app
 app = dash.Dash(__name__)
@@ -45,25 +48,36 @@ app.layout = html.Div(
     dash.dependencies.Input('time-selector', 'value')
 )
 def update_data(selected_indices):
-    selected_start = data.loc[selected_indices[0], 'timestamp'].time()
-    selected_end = data.loc[selected_indices[1], 'timestamp'].time()
+    selected_start = data.loc[selected_indices[0], 'timestamp']
+    selected_end = data.loc[selected_indices[1], 'timestamp']
 
     filtered_data = data[
-        (data['timestamp'].dt.time >= selected_start) &
-        (data['timestamp'].dt.time <= selected_end)
+        (data['timestamp'] >= selected_start) &
+        (data['timestamp'] <= selected_end)
+    ]
+
+    filtered_data_ref = data_ref[
+        (data_ref['timestamp'] >= selected_start) &
+        (data_ref['timestamp'] <= selected_end)
     ]
 
     fig = go.Figure()
+
+    # Add the predicted noise level line
     fig.add_trace(go.Scatter(
         x=filtered_data['timestamp'], y=filtered_data['value'], mode='lines', name='Predicted Noise Level', line=dict(width=3)))
+
+    # Add the reference line
+    fig.add_trace(go.Scatter(
+        x=filtered_data_ref['timestamp'], y=filtered_data_ref['laeq'], mode='lines', name='Reference', line=dict(width=2, dash='dot', color='darkgrey')))
 
     max_value = round(filtered_data['value'].max(), 2)
     max_timestamp = filtered_data.loc[filtered_data['value'].idxmax(), 'timestamp']
 
-    mean_of_the_day = data['value'].mean()
-    avg_value = round(filtered_data['value'].mean(), 2)
+    avg_predicted = filtered_data['value'].mean()
+    avg_reference = filtered_data_ref['laeq'].mean()
 
-    if avg_value >= 1.025 * mean_of_the_day:
+    if avg_predicted >= avg_reference:
         noise_level = 'Busy'
         box_color = 'red'
     else:
@@ -96,7 +110,6 @@ def update_data(selected_indices):
     fig.add_trace(go.Scatter(x=[max_timestamp], y=[max_value], mode='markers', name='Highest Value', marker=dict(color='red', size=12)))
 
     return fig, noise_level_box, highest_value_box
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
