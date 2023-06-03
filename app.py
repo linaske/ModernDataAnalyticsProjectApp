@@ -22,7 +22,7 @@ app.layout = html.Div(children=[
     dcc.RangeSlider(
         id='time-selector',
         marks={i: {'label': str(data.loc[i, 'timestamp'].time()), 'style': {
-                    'transform': 'rotate(-45deg)', 'white-space': 'nowrap'}} for i in range(0, len(data), len(data)//8)},
+                    'white-space': 'nowrap'}} for i in range(0, len(data), len(data)//8)},
         min=0,
         max=len(data) - 1,
         value=[0, len(data) - 1],
@@ -63,12 +63,12 @@ def update_data(selected_indices):
         box_color = 'red'
     else:
         noise_level = 'Calm'
-        box_color = 'green'
+        box_color = 'yellow'
 
     noise_level_box = html.Div(
         style={'background-color': box_color,
                 'padding': '10px', 'color': '#FFFFFF'},
-        children=['Situation at Oude: ' + noise_level]
+        children=['Situation at Oude Markt: ' + noise_level]
     )
 
     highest_value_box = html.Div(
@@ -85,7 +85,7 @@ def update_data(selected_indices):
         {
             'data': [go.Scatter(x=filtered_data['timestamp'], y=filtered_data['value'], mode='lines', name='Predicted Noise Level'),
                     go.Scatter(x=[max_timestamp], y=[max_value], mode='markers', name='Highest Value', marker=dict(color='red', size=8))],
-            'layout': go.Layout(xaxis=dict(title='Time'), yaxis=dict(title='Decibels'), showlegend=True)
+            'layout': go.Layout(xaxis=dict(title='Time (hour)'), yaxis=dict(title='Noise level (dB(A))'), showlegend=True)
         },
         noise_level_box,
         highest_value_box
