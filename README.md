@@ -1,6 +1,8 @@
 # ModernDataAnalyticsProjectApp
 This is the repository for application of the group project. It contains all the files necessary to run Plotly Dash application that is hosted on Heroku.
 
+Link to the app: https://mda-croatia-2023.herokuapp.com/
+
 ## Description of the files
 - **Procfile**: Contains commands that Heroku should execute to start and run the application.
 - **app.py**: Main Python file that contains the code for the application. 
