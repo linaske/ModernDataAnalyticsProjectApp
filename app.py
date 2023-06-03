@@ -71,12 +71,14 @@ def update_data(selected_indices):
     fig.add_trace(go.Scatter(
         x=filtered_data_ref['timestamp'], y=filtered_data_ref['laeq'], mode='lines', name='Reference', line=dict(width=2, dash='dot', color='darkgrey')))
 
+    # Calculate some statistics
     max_value = round(filtered_data['value'].max(), 2)
     max_timestamp = filtered_data.loc[filtered_data['value'].idxmax(), 'timestamp']
 
     avg_predicted = filtered_data['value'].mean()
     avg_reference = filtered_data_ref['laeq'].mean()
 
+    # Define box behavior
     if avg_predicted >= avg_reference:
         noise_level = 'Busier than usual'
         box_color = 'red'
@@ -94,6 +96,7 @@ def update_data(selected_indices):
         children=['Highest Value: ' + str(max_value) + ' (Time: ' + str(max_timestamp.time()) + ')']
     )
 
+# Modify layout
     fig.update_layout(
         xaxis=dict(
             title='Time',
@@ -107,6 +110,7 @@ def update_data(selected_indices):
         paper_bgcolor='white'
     )
 
+# Add red dot
     fig.add_trace(go.Scatter(x=[max_timestamp], y=[max_value], mode='markers', name='Highest Value', marker=dict(color='red', size=12)))
 
     return fig, noise_level_box, highest_value_box
