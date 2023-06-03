@@ -78,10 +78,10 @@ def update_data(selected_indices):
     avg_reference = filtered_data_ref['laeq'].mean()
 
     if avg_predicted >= avg_reference:
-        noise_level = 'Busy'
+        noise_level = 'Busier than usual'
         box_color = 'red'
     else:
-        noise_level = 'Calm'
+        noise_level = 'Calmer than usual'
         box_color = 'green'
 
     noise_level_box = html.Div(
