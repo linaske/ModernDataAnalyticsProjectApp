@@ -3,6 +3,8 @@ This is the repository for application of the group project. It contains all the
 
 Link to the app: https://mda-croatia-2023.herokuapp.com/
 
+Link to the main repository of the group project: https://github.com/IvanaOsredek/ModernDataAnalyticsProject/tree/main
+
 ## Description of the files
 - **Procfile**: Contains commands that Heroku should execute to start and run the application.
 - **app.py**: Main Python file that contains the code for the application. 
